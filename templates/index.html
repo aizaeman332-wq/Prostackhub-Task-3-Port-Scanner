@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Port Scanner | ProStackhub</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #020817, #0b1f3a, #06152b);
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        /* ---------- BRANDING ---------- */
+
+        .branding {
+            background: rgba(255,255,255,0.96);
+            border-radius: 18px;
+            padding: 15px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .company-logo {
+            width: 180px;
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        .personal {
+            text-align: center;
+        }
+
+        .personal-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #168cff;
+        }
+
+        .personal-name {
+            color: #111827;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .personal-role {
+            color: #555;
+            font-size: 12px;
+        }
+
+        /* ---------- HEADER ---------- */
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .shield {
+            font-size: 55px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 42px;
+        }
+
+        .blue {
+            color: #19c7ff;
+        }
+
+        .subtitle {
+            color: #9fb1c8;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        /* ---------- CARD ---------- */
+
+        .card {
+            background: rgba(7, 28, 55, 0.88);
+            border: 1px solid rgba(0, 190, 255, 0.3);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        input {
+            flex: 1;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #315b82;
+            background: #061426;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #16c7ff;
+        }
+
+        button {
+            padding: 15px 28px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #159cff, #5724ff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,180,255,0.35);
+        }
+
+        .notice {
+            margin-top: 14px;
+            color: #91a7c2;
+            font-size: 13px;
+        }
+
+        .error {
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 8px;
+            background: rgba(255,50,50,0.12);
+            color: #ffaaaa;
+        }
+
+        /* ---------- STATISTICS ---------- */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: rgba(7, 28, 55, 0.88);
+            border: 1px solid rgba(0,190,255,0.25);
+            border-radius: 16px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 30px;
+        }
+
+        .number {
+            font-size: 27px;
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        .stat-label {
+            color: #91a7c2;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        /* ---------- RESULTS ---------- */
+
+        .results-heading {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            background: rgba(0,100,180,0.25);
+            color: #8ec9f5;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid rgba(150,180,210,0.12);
+        }
+
+        .open {
+            color: #42ffad;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #899bb2;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #91a2ba;
+            border-top: 1px solid rgba(150,180,210,0.15);
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: #18c8ff;
+        }
+
+        /* ---------- MOBILE ---------- */
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .branding {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .company-logo {
+                width: 150px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ================= BRANDING ================= -->
+
+    <div class="branding">
+
+        <!-- Apna ProStackhub logo yahan add karna -->
+        <img
+            src="{{ url_for('static', filename='images/prostackhub.png') }}"
+            alt="ProStackhub Logo"
+            class="company-logo"
+        >
+
+
+        <div class="personal">
+
+            <!-- Apna logo/photo yahan add karna -->
+            <img
+                src="{{ url_for('static', filename='images/aiza-logo.png') }}"
+                alt="Aiza Eman"
+                class="personal-logo"
+            >
+
+            <div class="personal-name">
+                Aiza Eman
+            </div>
+
+            <div class="personal-role">
+                Software Engineer
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="header">
+
+        <div class="shield">🛡️</div>
+
+        <h1>
+            Cyber <span class="blue">Port Scanner</span>
+        </h1>
+
+        <p class="subtitle">
+            TCP Port Scanner • Security Lab Dashboard
+        </p>
+
+    </div>
+
+
+    <!-- ================= SCANNER ================= -->
+
+    <div class="card">
+
+        <form method="POST">
+
+            <label for="target">
+                🎯 Target IP Address
+            </label>
+
+            <div class="form-row">
+
+                <input
+                    type="text"
+                    id="target"
+                    name="target"
+                    placeholder="e.g. 127.0.0.1"
+                    value="{{ target }}"
+                    required
+                >
+
+                <button type="submit">
+                    🔍 Start Scan
+                </button>
+
+            </div>
+
+        </form>
+
+        <div class="notice">
+            ℹ️ Use this scanner only on your own computer
+            or an authorized security lab.
+        </div>
+
+
+        {% if error %}
+
+        <div class="error">
+            ⚠️ {{ error }}
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    {% if target %}
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">🎯</div>
+
+            <div class="number">
+                {{ target }}
+            </div>
+
+            <div class="stat-label">
+                Target
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">🖥️</div>
+
+            <div class="number">
+                1024
+            </div>
+
+            <div class="stat-label">
+                Ports Scanned
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">🔓</div>
+
+            <div class="number">
+                {{ results|length }}
+            </div>
+
+            <div class="stat-label">
+                Open Ports
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <div class="card">
+
+        <div class="results-heading">
+            📊 Scan Results
+        </div>
+
+
+        {% if results %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Port</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in results %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ item.port }}</strong>
+                    </td>
+
+                    <td>
+                        {{ item.service }}
+                    </td>
+
+                    <td>
+                        <span class="open">
+                            ● {{ item.status }}
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            🔒 No open TCP ports found.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        ProStackhub • Cyber Port Scanner
+
+        <br><br>
+
+        Made by
+        <strong>
+            Aiza Eman (Software Engineer)
+        </strong>
+
+    </footer>
+
+
+</div>
+
+</body>
+</html>
